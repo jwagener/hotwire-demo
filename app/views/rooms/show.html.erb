@@ -1,6 +1,14 @@
 <p id="notice"><%= notice %></p>
 
+<%= turbo_stream_from "total_count" %>
+Message Count for all rooms: <span class="total_count" id="total_count"><%= Message.all.count %></span><br/>
+
+<%= turbo_stream_from "room_#{ @room.id }_count" %>
+Message Count for this rooms: <span id="room_<%= @room.id %>_count"><%= @room.messages.count %></span><br/>
+
 <%= turbo_stream_from @room %>
+
+<%= turbo_frame_tag "new_message", src: new_room_message_path(@room), target: "_top" %>
 
 <%= turbo_frame_tag "room" do %>
   <%= render @room %>
@@ -15,4 +23,3 @@
   <%= render @room.messages %>
 </div>
 
-<%= turbo_frame_tag "new_message", src: new_room_message_path(@room), target: "_top" %>

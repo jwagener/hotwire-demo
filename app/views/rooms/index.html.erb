@@ -14,6 +14,11 @@
     <% @rooms.each do |room| %>
       <tr>
         <td><%= room.name %></td>
+        <td>
+          <%= turbo_stream_from "room_#{ room.id }_count" %>
+          Msgs:<span id="room_<%= room.id %>_count"><%= room.messages.count %></span><br/>
+        </td>
+        
         <td><%= link_to 'Show', room %></td>
         <td><%= link_to 'Edit', edit_room_path(room) %></td>
         <td><%= link_to 'Destroy', room, method: :delete, data: { confirm: 'Are you sure?' } %></td>
@@ -23,5 +28,8 @@
 </table>
 
 <br>
+
+<%= turbo_stream_from "total_count" %>
+Message Count for all rooms: <span class="total_count" id="total_count"><%= Message.all.count %></span><br/>
 
 <%= link_to 'New Room', new_room_path %>
